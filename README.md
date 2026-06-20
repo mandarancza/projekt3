@@ -38,3 +38,9 @@ src/
 
 Najwazniejsze parametry obrazu, obserwatora i oswietlenia sa w pliku
 `src/defaultRenderOptions.m`.
+
+Parametry szczegolnie przydatne do regulacji wygladu:
+
+- `shadowAmbientScale` - dodatkowe przyciemnienie obszarow w cieniu,
+- `phongSpecularScale` - sila bialego odblysku zwierciadlanego w modelu Phonga,
+- `phongM` - wykladnik polysku Phonga.

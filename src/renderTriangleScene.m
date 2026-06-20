@@ -105,14 +105,17 @@ else
 end
 
 shadowMask = pointsInShadow(points, scene, triIdx, lightPos, opts.shadowEpsilon);
-ndotl(shadowMask) = 0;
+diffuseFactor = ndotl;
+diffuseFactor(shadowMask) = 0;
+ambientFactor = ones(pointCount, 1);
+ambientFactor(shadowMask) = opts.shadowAmbientScale;
 
 denominator = 1 + opts.attenuation * distance.^2;
 lightRGB = bsxfun(@rdivide, opts.maxLightRGB, denominator);
 
 base = repmat(triangle.baseColor, pointCount, 1);
-ambient = repmat(opts.ambientRGB, pointCount, 1);
-diffuse = lightRGB .* repmat(ndotl, 1, 3);
+ambient = repmat(opts.ambientRGB, pointCount, 1) .* repmat(ambientFactor, 1, 3);
+diffuse = lightRGB .* repmat(diffuseFactor, 1, 3);
 colors = base .* (ambient + diffuse);
 
 if strcmp(modelName, 'phong')
@@ -122,9 +125,11 @@ if strcmp(modelName, 'phong')
 
     reflectDir = 2 * repmat(ndotl, 1, 3) .* normal - lightDir;
     specular = max(sum(reflectDir .* viewDir, 2), 0) .^ opts.phongM;
-    specular(shadowMask | ndotl <= 0) = 0;
+    specular(shadowMask | diffuseFactor <= 0) = 0;
 
-    colors = colors + base .* lightRGB .* repmat(specular, 1, 3);
+    specularColor = repmat(opts.phongSpecularRGB, pointCount, 1);
+    colors = colors + opts.phongSpecularScale .* specularColor .* ...
+        lightRGB .* repmat(specular, 1, 3);
 end
 end
 

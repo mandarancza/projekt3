@@ -15,6 +15,12 @@ opts.attenuation = 0.001;
 
 opts.observer = [10, 5, 40];
 opts.phongM = 15;
+opts.phongSpecularRGB = [1, 1, 1];
+opts.phongSpecularScale = 1.4;
+
+% Przy skali 0.1x0.1 i bardzo mocnym swietle punktowym sam ambient bywa
+% wizualnie zbyt jasny, dlatego zacienione miejsca sa dodatkowo gaszone.
+opts.shadowAmbientScale = 0.25;
 
 % Zadanie nie definiuje jednostronnosci materialu. Dla czytelnych wynikow
 % traktujemy trojkaty jako powierzchnie dwustronne.
