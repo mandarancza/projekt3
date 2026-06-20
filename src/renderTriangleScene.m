@@ -3,7 +3,7 @@ function image = renderTriangleScene(scene, lightPos, modelName, opts)
 
 modelName = lower(char(modelName));
 if ~strcmp(modelName, 'lambert') && ~strcmp(modelName, 'phong')
-    error("Nieznany model oswietlenia: %s", modelName);
+    error('Nieznany model oswietlenia: %s', modelName);
 end
 
 [xCenters, yCenters] = pixelCenters(opts);
